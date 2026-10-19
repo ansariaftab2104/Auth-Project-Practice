@@ -1,6 +1,8 @@
 import React from 'react'
+import {useNavigate} from 'react-router'
 
 const RegisterPage = () => {
+    const registerNavigate = useNavigate()
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 px-4 py-10">
       <div className="w-full max-w-md">
@@ -104,9 +106,9 @@ const RegisterPage = () => {
 
           <p className="mt-6 text-center text-sm text-slate-500">
             Already have an account?{' '}
-            <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+            <button onClick={()=> registerNavigate('/')} className="font-medium text-indigo-600 hover:text-indigo-500">
               Sign in
-            </a>
+            </button>
           </p>
         </div>
 
