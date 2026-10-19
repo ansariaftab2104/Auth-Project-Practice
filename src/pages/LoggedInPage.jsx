@@ -1,8 +1,18 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 
 const LoggedInPage = () => {
   const LoggedInNavigate = useNavigate();
+  const {register, handleSubmit, reset, formState: {errors}} = useForm(
+    {
+        mode: "onChange"
+    }
+  )
+  const handleForm = (data)=>{
+    console.log(data);
+    reset()
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 px-4 py-10">
       <div className="w-full max-w-md">
@@ -21,7 +31,7 @@ const LoggedInPage = () => {
           </div>
 
           {/* Form */}
-          <form className="space-y-5">
+          <form onSubmit={handleSubmit(handleForm)} className="space-y-5">
             {/* Email */}
             <div>
               <label
@@ -30,13 +40,21 @@ const LoggedInPage = () => {
               >
                 Email address
               </label>
-              <input
+              <input {...register('email',{
+                required: "Email is required",
+                pattern:{
+                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$/,
+                    message: "Invalid Email"
+
+                }
+              })}
                 id="email"
                 name="email"
                 type="email"
                 placeholder="you@example.com"
                 className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/40"
               />
+              {errors.email && <p className="text-red-700 font-semibold text-base">{errors.email.message}</p>}
             </div>
 
             {/* Password */}
@@ -55,13 +73,21 @@ const LoggedInPage = () => {
                   Forgot password?
                 </a>
               </div>
-              <input
+              <input {...register('password',{
+                required: "Password is Required",
+                minLength: {
+                    value: 8,
+                    message: "Minimum 8 values are required"
+                }
+              })}
                 id="password"
                 name="password"
                 type="password"
                 placeholder="••••••••"
                 className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/40"
               />
+              {errors.password && <p className="text-red-700 font-semibold text-base">{errors.password.message}</p>}
+
             </div>
 
             {/* Remember me */}
